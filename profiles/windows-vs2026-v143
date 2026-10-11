@@ -1,0 +1,8 @@
+include(windows)
+
+[conf]
+tools.microsoft.msbuild:vs_version=18
+tools.microsoft:msvc_update=4
+tools.cmake.cmaketoolchain:generator=Ninja
+tools.build:jobs=8
+user.openssl:windows_use_jom=True

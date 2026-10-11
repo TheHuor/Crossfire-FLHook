@@ -22,6 +22,12 @@ add_library("${PLUGIN_NAME}" SHARED ${PLUGIN_SOURCE_FILES}
         ${INCLUDE_PATH}/PCH.hpp ${INCLUDE_PATH}/PCH.cpp
 )
 
+if (PLUGIN_IS_EXAMPLE)
+    set_target_properties("${PLUGIN_NAME}" PROPERTIES FOLDER "Plugins/Examples")
+else ()
+    set_target_properties("${PLUGIN_NAME}" PROPERTIES FOLDER "Plugins")
+endif ()
+
 message(STATUS ${PLUGIN_OUTPUT_DIR})
 set_target_properties("${PLUGIN_NAME}" PROPERTIES
         LINKER_LANGUAGE CXX

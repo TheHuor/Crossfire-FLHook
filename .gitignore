@@ -56,6 +56,8 @@ obj/
 **/.vs/
 .idea/
 .venv/
+.conan2/
+.build-tmp/
 __pycache__/
 
 # Docs
