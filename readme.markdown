@@ -71,6 +71,9 @@ git submodule update --init
 
 ## Building
 
+For the Visual Studio 2026 IDE with the VS2022 v143 compiler, see [BUILDING-V143.md](BUILDING-V143.md).
+For the newer v145 compiler, see [BUILDING-VS2026.md](BUILDING-VS2026.md).
+
 FLHook has the following requirements to be built:
 - Visual Studio 2022 (vc143)
 - Python 3.11+

@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.20)
 
-project("${PROJECT_NAME}" LANGUAGES CXX VERSION 5.0.0)
+project(FLHook LANGUAGES CXX VERSION 5.0.0)
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+set_property(GLOBAL PROPERTY PREDEFINED_TARGETS_FOLDER "CMake")
 message(STATUS "Detected compiler: ${CMAKE_CXX_COMPILER}")
 
 if (${CMAKE_HOST_SYSTEM_NAME} STREQUAL "Linux")
@@ -34,10 +36,14 @@ set(PLUGIN_OUTPUT_DIR ${PROJECT_OUTPUT_DIR}/plugins)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /cgthreads8 /bigobj")
+if (MSVC AND CMAKE_GENERATOR MATCHES "Visual Studio")
+    add_compile_options(/MP4)
+endif ()
 
 # Load Concurrencpp
 FetchContent_Declare(concurrencpp SOURCE_DIR "${VENDOR}/concurrencpp")
 FetchContent_MakeAvailable(concurrencpp)
+set_target_properties(concurrencpp PROPERTIES FOLDER "Dependencies")
 
 # Load cache variables from
 include("LoadConf.cmake")
@@ -54,6 +60,9 @@ file(GLOB_RECURSE SOURCE_FILES LIST_DIRECTORIES false
         "${VENDOR}/reflect-cpp/*.hpp"
 )
 
+# Mirror the repository directories in Visual Studio's Solution Explorer.
+source_group(TREE "${PROJECT_SOURCE_DIR}" FILES ${SOURCE_FILES})
+
 find_package(msgpack CONFIG REQUIRED)
 find_package(mongoc-1.0 CONFIG REQUIRED)
 
@@ -61,9 +70,11 @@ set(REFLECTCPP_BUILD_SHARED OFF)
 set(REFLECTCPP_MSGPACK ON)
 set(REFLECTCPP_BSON ON)
 add_subdirectory(${VENDOR}/reflect-cpp)
+set_target_properties(reflectcpp PROPERTIES FOLDER "Dependencies")
 
 add_library("${PROJECT_NAME}" SHARED ${SOURCE_FILES} include/PCH.hpp include/PCH.cpp)
 set_target_properties("${PROJECT_NAME}" PROPERTIES
+        FOLDER "FLHook"
         LINKER_LANGUAGE CXX
         ARCHIVE_OUTPUT_DIRECTORY ${PROJECT_OUTPUT_DIR}
         ARCHIVE_OUTPUT_DIRECTORY_DEBUG ${PROJECT_OUTPUT_DIR}

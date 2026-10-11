@@ -19,7 +19,7 @@ class CompressorRecipe(ConanFile):
         for dep in self.dependencies.values():
             for bin_dir in dep.cpp_info.bindirs:
                 copy(self, "*.dll", src=bin_dir,
-                     dst=os.path.join(self.source_folder, f"build/{self.settings.build_type}/bin"),
+                     dst=os.path.join(self.build_folder, "bin"),
                      keep_path=False)
 
     def requirements(self):
